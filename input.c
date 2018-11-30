@@ -11,8 +11,11 @@ static struct input_func* registered_funcs[INPUT_MAX_NUM_FUNCS] = {NULL};
 static int init = 0;
 static int check_array_length(char arr[], size_t max_len);
 static void input_exit(void);
+static int is_init(void);
+static int input_get_func(char name[], struct input_func **rtn);
+static struct input_func* input_allocate_struct(void);
 
-struct input_func {
+static struct input_func {
 	char name[INPUT_MAX_NAME_LENGTH];
 	int (*execute)(int argc, char *argv[]);
 };
@@ -28,13 +31,14 @@ static void input_exit(void) {
 	init = 0;
 }
 
-void input_init(void) {
-	atexit(input_exit);
-	init = 1;
+static int is_init(void) {
+	return init;
 }
 
-int is_init(void) {
-	return init;
+void input_init(void) {
+	if (is_init()) { return; }
+	atexit(input_exit);
+	init = 1;
 }
 
 int input_register_func(char name[], int (*func)(int argc, char *argv[])) {
@@ -52,7 +56,7 @@ int input_register_func(char name[], int (*func)(int argc, char *argv[])) {
 	return 0;
 }
 
-int input_get_func(char name[], struct input_func **rtn) {
+static int input_get_func(char name[], struct input_func **rtn) {
 	if (!is_init()) { input_init(); }
 
 	for (int i=0; i < INPUT_MAX_NUM_FUNCS; i++) {
@@ -65,7 +69,7 @@ int input_get_func(char name[], struct input_func **rtn) {
 	return 0;
 }
 
-int input_parse(int argc, char *argv[], struct input_func **rtn) {
+int input_parse(int argc, char *argv[]) {
 	if (!is_init()) { input_init(); }
 	for (int i=0; i < argc; i++) {
 		printf("%s\n",argv[i]);
@@ -73,7 +77,7 @@ int input_parse(int argc, char *argv[], struct input_func **rtn) {
 	return 1;
 }
 
-struct input_func* input_allocate_struct(void) {
+static struct input_func* input_allocate_struct(void) {
 	struct input_func *new_struct = malloc(sizeof(struct input_func));
 	strcpy(new_struct->name,"");
 	new_struct->execute = NULL;
