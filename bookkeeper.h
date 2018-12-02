@@ -9,6 +9,10 @@ int bk_list(int num_records, char *rtn[]);
 
 int bk_info(char name[], struct ytdl_playlist *rtn);
 
+int bk_rename(char name[], char new_name[]);
+
+int bk_mv(char name[], char dl_location[]);
+
 int bk_rm(char name[]);
 
 int bk_cache_video(char name[], char yt_id[]);

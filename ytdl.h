@@ -9,6 +9,10 @@ int ytdl_list(int num_records, char *rtn[]);
 
 int ytdl_info(char name[], struct ytdl_playlist *rtn);
 
+int ytdl_rename(char name[], char new_name[]);
+
+int ytdl_mv(char name[], char dl_location);
+
 int ytdl_rm(char name[]);
 
 int ytdl_uncache(char name[]);
