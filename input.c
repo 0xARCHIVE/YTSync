@@ -6,13 +6,13 @@
 #define INPUT_MAX_NAME_LENGTH 256
 #define INPUT_MAX_NUM_FUNCS 10
 
-static struct input_func* registered_funcs[INPUT_MAX_NUM_FUNCS] = {NULL};
+static struct input_func* registered_funcs[INPUT_MAX_NUM_FUNCS];
 static int init = 0;
 static void input_init(void);
 static void input_exit(void);
 static int is_init(void);
 static int input_get_func(char name[], struct input_func **rtn);
-static struct input_func* input_allocate_struct(void);
+static void input_init_struct(struct input_func *rtn);
 
 static struct input_func {
 	char name[INPUT_MAX_NAME_LENGTH];
@@ -28,7 +28,7 @@ static void input_init(void) {
 static void input_exit(void) {
 	for (int i=0; i < INPUT_MAX_NUM_FUNCS; i++) {
 		struct input_func *f = registered_funcs[i];
-		if (f == NULL) { continue; }
+		if (NULL == f) { continue; }
 		free(f);
 		registered_funcs[i] = NULL;
 	}
@@ -45,30 +45,37 @@ static int input_get_func(char name[], struct input_func **rtn) {
 
 	for (int i=0; i < INPUT_MAX_NUM_FUNCS; i++) {
 		struct input_func *f = registered_funcs[i];
-		if (f == NULL || f->name == NULL) { continue; }
+		if (NULL == f || NULL == f->name || f->name[0] == '\0') { continue; }
 		if (strncmp(name,f->name,INPUT_MAX_NAME_LENGTH) == 0) { *rtn = f; return 1; }
 	}
 
 	return 0;
 }
 
-static struct input_func* input_allocate_struct(void) {
-	struct input_func *new_struct = malloc(sizeof(struct input_func));
-	strcpy(new_struct->name,"");
-	new_struct->execute = NULL;
-	return new_struct;
+static void input_init_struct(struct input_func *rtn) {
+	memset(rtn->name,'\0',sizeof(rtn->name));
+	rtn->execute = NULL;
 }
 
 int input_register_func(char name[], int (*func)(int argc, char *argv[])) {
 	if (!is_init()) { input_init(); }
+	if (NULL == name) { return 0; }
 
 	for (int i=0; i < INPUT_MAX_NUM_FUNCS; i++) {
 		struct input_func *f = registered_funcs[i];
-		if (f == NULL) { f = input_allocate_struct(); registered_funcs[i] = f; }
-		if (f->name == NULL) { continue; }
-		strncpy(f->name,name,INPUT_MAX_NAME_LENGTH);
-		f->execute = func;
-		return 1;
+		if (NULL == f) {
+			f = (struct input_func *)malloc(sizeof(struct input_func));
+			if (NULL == f) { continue; }
+			input_init_struct(f);
+			registered_funcs[i] = f;
+		}
+
+		if (NULL == f->name) { continue; }
+		if ('\0' == f->name[0]) {
+			strncpy(f->name,name,INPUT_MAX_NAME_LENGTH);
+			f->execute = func;
+			return 1;
+		}
 	}
 
 	return 0;
@@ -79,7 +86,7 @@ int input_deregister_func(char name[]) {
 
 	for (int i=0; i < INPUT_MAX_NUM_FUNCS; i++) {
 		struct input_func *f = registered_funcs[i];
-		if (f == NULL || f->name == NULL) { continue; }
+		if (NULL == f || NULL == f->name) { continue; }
 		if (strncmp(name,f->name,INPUT_MAX_NAME_LENGTH) == 0) {
 			free(f);
 			registered_funcs[i] = NULL;
