@@ -8,7 +8,7 @@ OBJECTS = $(SOURCES:.c=.o)
 
 # Main target
 $(EXEC): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(EXEC)
+	$(CC) $(OBJECTS) -o $(EXEC) -l sqlite3
 
 # To obtain object files
 %.o: %.c
