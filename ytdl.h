@@ -3,7 +3,7 @@
 
 struct ytdl_playlist;
 
-void ytdl_init(void);
+int ytdl_init(void);
 
 void ytdl_exit(void);
 
