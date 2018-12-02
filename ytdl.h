@@ -13,7 +13,7 @@ int ytdl_rm(char name[]);
 
 int ytdl_uncache(char name[]);
 
-int ytdl_update(char name[]);
+int ytdl_fetch(char name[]);
 
 struct ytdl_playlist* ytdl_allocate_struct(void);
 

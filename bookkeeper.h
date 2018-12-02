@@ -11,8 +11,12 @@ int bk_info(char name[], struct ytdl_playlist *rtn);
 
 int bk_rm(char name[]);
 
-int bk_uncache(char name[]);
+int bk_cache_video(char name[], char yt_id[]);
 
-int bk_update(char name[]);
+int bk_uncache_video(char name[], char yt_id[]);
+
+int bk_uncache_playlist(char name[]);
+
+int bk_is_cached(char name[], char yt_id[]);
 
 #endif
