@@ -2,3 +2,4 @@ ytsync
 *.o
 *.swp
 *.db
+*.sql
