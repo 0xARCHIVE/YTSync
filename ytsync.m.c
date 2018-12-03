@@ -9,5 +9,7 @@ int main(int argc, char *argv[]) {
 	char **_argv = &argv[1];
 	input_parse(_argc,_argv);
 
+	// todo: register help option
+
 	return 0;
 }

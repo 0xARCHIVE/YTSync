@@ -3,7 +3,7 @@
 
 #include "ytdl.h"
 
-int bk_add(char * name, char * url, char * dl_location);
+int bk_add(char * name, char * ytid, char * dl_location);
 
 int bk_fetch_names(int num_records, int num_chars, char *** rtn);
 

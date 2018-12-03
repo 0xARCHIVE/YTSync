@@ -7,7 +7,7 @@ int ytdl_init(void);
 
 void ytdl_exit(void);
 
-int ytdl_add(char * name, char * url, char * dl_location);
+int ytdl_add(char * name, char * ytid, char * dl_location);
 
 int ytdl_fetch_names(int num_records, int num_chars, char *** rtn);
 
