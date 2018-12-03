@@ -5,8 +5,7 @@
 
 int bk_add(char * name, char * url, char * dl_location);
 
-int bk_fetch_names(void);	// prepares bookkeeper to start fetching playlist names
-int bk_fetch_next_name(int num_chars, char * rtn);	// returns 0 when we're at the end of the records
+int bk_fetch_names(int num_records, int num_chars, char *** rtn);
 
 int bk_info(char * name, struct ytdl_playlist * rtn);
 

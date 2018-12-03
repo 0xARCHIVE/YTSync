@@ -9,8 +9,7 @@ void ytdl_exit(void);
 
 int ytdl_add(char * name, char * url, char * dl_location);
 
-int ytdl_fetch_names(void);
-int ytdl_fetch_next_name(int num_chars, char * rtn);
+int ytdl_fetch_names(int num_records, int num_chars, char *** rtn);
 
 int ytdl_info(char * name, struct ytdl_playlist * rtn);
 
