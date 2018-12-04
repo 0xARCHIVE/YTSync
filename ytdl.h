@@ -23,6 +23,12 @@ int ytdl_uncache(char * name);
 
 int ytdl_fetch(char * name);
 
-void ytdl_init_struct(struct ytdl_playlist *rtn);
+void ytdl_init_struct(struct ytdl_playlist * rtn);
+
+void ytdl_set_name(struct ytdl_playlist * rtn, const char * name);
+
+void ytdl_set_ytid(struct ytdl_playlist * rtn, const char * ytid);
+
+void ytdl_set_dl_location(struct ytdl_playlist * rtn, const char * dl_location);
 
 #endif
