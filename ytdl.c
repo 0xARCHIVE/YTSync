@@ -270,8 +270,10 @@ int ytdl_fetch(char * name) {
 		char command2[YTDL_MAX_CMD_LENGTH];
 		snprintf(command2,YTDL_MAX_CMD_LENGTH,"%s \"%s\" \"%s\"","./fetch_video.py",video_ytid,playlist->dl_location);
 
+		fprintf(stdout,"Downloading video %s ... ",video_ytid);
+		fflush(stdout);
 		fp2 = popen(command2,"r");
-		if (fp2 == NULL) { continue; }
+		if (fp2 == NULL) { fprintf(stdout,"\n"); continue; }
 
 		while ((nread2 = getline(&line2, &len2, fp2)) != -1) {
 			// remove trailing \n char
@@ -281,10 +283,12 @@ int ytdl_fetch(char * name) {
 			}
 
 			if (strncmp(line2,"1",nread2) == 0) {
-				fprintf(stdout,"Downloaded video %s\n",video_ytid);
+				fprintf(stdout,"done\n");
 				bk_cache_video(name,video_ytid);
+				continue;
 			}
 
+			fprintf(stdout,"\n");
 			break;
 		}
 
