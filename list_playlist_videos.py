@@ -7,7 +7,6 @@ def get_playlist_videos(playlist_id):
 		'extract_flat':True,
 		'simulate':True,
 		'quiet':True,
-		'ignoreerrors':True,
 	}
 
 	output = []
